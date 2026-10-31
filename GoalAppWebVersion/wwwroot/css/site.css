@@ -1,31 +1,180 @@
+
+
+/* ==========================================
+   GOALAPP COLOR SETTINGS
+   ========================================== */
+
+:root {
+    /* Main Theme */
+    --primary-color: #234E3D; /* Deep forest green */
+    --secondary-color: #3E8060; /* Growth green */
+    --accent-color: #86A98C; /* Sage green */
+    --background-color: #F3F5EF; /* Soft cream */
+    --achievement-color: #E5B96B; /* Warm gold */
+    --text-color: #26352D; /* Dark green-gray */
+    /* Buttons */
+    --primary-button: var(--secondary-color);
+    --primary-button-hover: var(--primary-color);
+    --danger-button: #DC3545;
+    --danger-button-hover: #BB2D3B;
+    --success-button: var(--secondary-color);
+    --success-button-hover: var(--primary-color);
+    /* Navigation */
+    --navbar-background: var(--primary-color);
+    --navbar-text: #FFFFFF;
+    --navbar-hover: var(--accent-color);
+    /* Tables */
+    --table-header-background: var(--primary-color);
+    --table-header-text: #FFFFFF;
+    --table-row-background: #FFFFFF;
+    --table-row-alternate: #EAF0E9;
+    --table-border: #D5DED5;
+    /* Cards and Containers */
+    --card-background: #FFFFFF;
+    --card-border: #D5DED5;
+    --card-shadow: rgba(35, 78, 61, 0.10);
+    /* Forms and Inputs */
+    --input-background: #FFFFFF;
+    --input-border: #B8C9BA;
+    --input-focus: var(--secondary-color);
+    --placeholder-text: #89968B;
+    /* Progress and Achievements */
+    --progress-background: #DDE6DC;
+    --progress-fill: var(--secondary-color);
+    --milestone-color: var(--achievement-color);
+    --streak-color: #D99A45;
+    /* Links */
+    --link-color: var(--secondary-color);
+    --link-hover: var(--primary-color);
+    /* Status Messages */
+    --success-background: #E5F1E7;
+    --success-text: #285B3B;
+    --warning-background: #FFF4D9;
+    --warning-text: #76551C;
+    --error-background: #FCE8E8;
+    --error-text: #842029;
+    /* General Borders and Dividers */
+    --border-color: #D5DED5;
+    --divider-color: #E1E8DF;
+}
+
+/* ==========================================
+   GENERAL FORMATTING
+   ========================================== */
+
 html {
-  font-size: 14px;
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* ==========================================
+   INPUT FOCUS
+   ========================================== */
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+/* ==========================================
+   FORM PLACEHOLDERS
+   ========================================== */
+
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder,
+.form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+/* ==========================================
+   NAVIGATION BAR
+   ========================================== */
+
+.navbar {
+    background-color: var(--navbar-background) !important;
+}
+
+    .navbar .navbar-brand,
+    .navbar .nav-link {
+        color: var(--navbar-text) !important;
+    }
+
+        .navbar .nav-link:hover,
+        .navbar .navbar-brand:hover {
+            color: var(--navbar-hover) !important;
+        }
+
+/* ==========================================
+   BUTTONS
+   ========================================== */
+
+.btn-primary {
+    background-color: var(--primary-button) !important;
+    border-color: var(--primary-button) !important;
+    color: white !important;
+}
+
+    .btn-primary:hover {
+        background-color: var(--primary-button-hover) !important;
+        border-color: var(--primary-button-hover) !important;
+    }
+
+.btn-danger {
+    background-color: var(--danger-button) !important;
+    border-color: var(--danger-button) !important;
+    color: white !important;
+}
+
+    .btn-danger:hover {
+        background-color: var(--danger-button-hover) !important;
+        border-color: var(--danger-button-hover) !important;
+    }
+
+/* ==========================================
+   TABLES
+   ========================================== */
+
+.table thead th {
+    background-color: var(--table-header-background) !important;
+    color: var(--table-header-text) !important;
+    border-color: var(--table-border) !important;
+}
+
+.table tbody td {
+    background-color: var(--table-row-background);
+    color: var(--text-color);
+    border-color: var(--table-border);
+}
+
+.table tbody tr:nth-child(even) td {
+    background-color: var(--table-row-alternate);
+}
+
+/* ==========================================
+   FOOTER SPACING
+   ========================================== */
+
+.footer {
+    margin-top: 20px;
 }
