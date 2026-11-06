@@ -22,6 +22,29 @@ namespace GoalAppWebVersion.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("GoalAppWebVersion.Models.Entities.ExerciseItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ExerciseGoalId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ExerciseType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Reps")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExerciseGoalId");
+
+                    b.ToTable("ExerciseItem");
+                });
+
             modelBuilder.Entity("GoalAppWebVersion.Models.Entities.Goal", b =>
                 {
                     b.Property<Guid>("Id")
@@ -32,16 +55,72 @@ namespace GoalAppWebVersion.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
+                    b.Property<string>("HowOften")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Streak")
-                        .HasColumnType("int");
+                    b.Property<string>("ReminderFrequency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Goal");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Goal");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("GoalAppWebVersion.Models.Entities.ExerciseGoal", b =>
+                {
+                    b.HasBaseType("GoalAppWebVersion.Models.Entities.Goal");
+
+                    b.HasDiscriminator().HasValue("ExerciseGoal");
+                });
+
+            modelBuilder.Entity("GoalAppWebVersion.Models.Entities.HabitBreakGoal", b =>
+                {
+                    b.HasBaseType("GoalAppWebVersion.Models.Entities.Goal");
+
+                    b.Property<int>("DaysSinceHabitRelapse")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("HabitBreakGoal");
+                });
+
+            modelBuilder.Entity("GoalAppWebVersion.Models.Entities.HabitMakeGoal", b =>
+                {
+                    b.HasBaseType("GoalAppWebVersion.Models.Entities.Goal");
+
+                    b.Property<int>("HabitStreak")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("HabitMakeGoal");
+                });
+
+            modelBuilder.Entity("GoalAppWebVersion.Models.Entities.ExerciseItem", b =>
+                {
+                    b.HasOne("GoalAppWebVersion.Models.Entities.ExerciseGoal", null)
+                        .WithMany("Exercises")
+                        .HasForeignKey("ExerciseGoalId");
+                });
+
+            modelBuilder.Entity("GoalAppWebVersion.Models.Entities.ExerciseGoal", b =>
+                {
+                    b.Navigation("Exercises");
                 });
 #pragma warning restore 612, 618
         }

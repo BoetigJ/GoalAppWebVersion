@@ -20,19 +20,29 @@ namespace GoalAppWebVersion.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Add(Models.GoalViewModel goalViewModel)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add(GoalViewModel vm)
         {
-            var goal = new Goal
+            if (!ModelState.IsValid) return View(vm);
+
+            Goal? goal = vm.GoalType switch
             {
-                Id = Guid.NewGuid(),
-                Name = goalViewModel.Name,
-                Description = goalViewModel.Description,
-                Streak = goalViewModel.Streak
+                "HabitMake" => new HabitMakeGoal(vm.Name, vm.HowOften, vm.ReminderFrequency),
+                "HabitBreak" => new HabitBreakGoal(vm.Name, vm.HowOften, vm.ReminderFrequency),
+                "Exercise" => new ExerciseGoal(vm.Name, vm.HowOften, vm.ReminderFrequency),
+                _ => null
             };
+
+            if (goal is null)
+            {
+                ModelState.AddModelError(nameof(vm.GoalType), "Pick a goal type.");
+                return View(vm);
+            }
+
+            goal.Description = vm.Description;
             await dbContext.AddAsync(goal);
             await dbContext.SaveChangesAsync();
-
-            return View();
+            return RedirectToAction(nameof(ListGoals));
         }
         [HttpGet]
         public async Task<IActionResult> ListGoals()
@@ -57,7 +67,6 @@ namespace GoalAppWebVersion.Controllers
                 Id = goal.Id,
                 Name = goal.Name,
                 Description = goal.Description,
-                Streak = goal.Streak
             };
 
             // Send the ViewModel to the view
@@ -81,7 +90,6 @@ namespace GoalAppWebVersion.Controllers
 
             goal.Name = viewGoal.Name;
             goal.Description = viewGoal.Description;
-            goal.Streak = viewGoal.Streak;
 
             await dbContext.SaveChangesAsync();
 
@@ -99,6 +107,21 @@ namespace GoalAppWebVersion.Controllers
             }
             return RedirectToAction("ListGoals", "Goals");
 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RecordProgress(Guid id)
+        {
+            var goal = await dbContext.Goal.FindAsync(id);
+            if (goal is null) return NotFound();
+
+            if (goal is HabitMakeGoal make)
+                make.OnMilestone += (g, streak) => TempData["Message"] = $"{g.Name}: {streak}-day milestone!";
+
+            if (goal is ITrackable t) t.RecordProgress();
+
+            await dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(ListGoals));
         }
     }
 }

@@ -1,11 +1,14 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
 }
 @model List<GoalAppWebVersion.Models.Entities.Goal>
+@using GoalAppWebVersion.Models.Entities
 
 <h1>Goals</h1>
+
+@if (TempData["Message"] != null)
+{
+	<div class="alert alert-success">@TempData["Message"]</div>
+}
 
 <table class="table">
 	<thead>
@@ -13,7 +16,7 @@
 			<th>Goal ID</th>
 			<th>Goal Name</th>
 			<th>Goal Description</th>
-			<th>Goal Streak</th>
+			<th>Streak</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -25,9 +28,26 @@
 				<td>@goal.Name</td>
 				<td>@goal.Description</td>
 				<td>@goal.Streak</td>
-				<th>
-					<a class = "btn btn-primary" asp-controller="Goals" asp-action="editGoal" asp-route-id="@goal.Id">Edit</a>
-				</th>
+				<td class="d-flex gap-2">
+					@if (goal is GoalAppWebVersion.Models.Entities.ITrackable)
+					{
+						<form asp-controller="Goals" asp-action="RecordProgress" asp-route-id="@goal.Id" method="post">
+							<button type="submit" class="btn btn-success">Record progress</button>
+						</form>
+					}
+					@if (goal is IResettable)
+					{
+						<form asp-controller="Goals" asp-action="Reset" asp-route-id="@goal.Id" method="post">
+							<button type="submit" class="btn btn-warning">Reset</button>
+						</form>
+					}
+
+					<a class="btn btn-primary" asp-controller="Goals" asp-action="editGoal" asp-route-id="@goal.Id">Edit</a>
+					<form asp-controller="Goals" asp-action="DeleteGoal" asp-route-id="@goal.Id" method="post"
+						  onsubmit="return confirm('Delete this goal?');">
+						<button type="submit" class="btn btn-danger">Delete</button>
+					</form>
+				</td>
 			</tr>
 		}
 	</tbody>
