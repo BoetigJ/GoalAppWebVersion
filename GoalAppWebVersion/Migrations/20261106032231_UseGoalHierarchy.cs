@@ -11,16 +11,6 @@ namespace GoalAppWebVersion.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Streak",
-                table: "Goal");
-
-            migrationBuilder.AddColumn<int>(
-                name: "DaysSinceHabitRelapse",
-                table: "Goal",
-                type: "int",
-                nullable: true);
-
             migrationBuilder.AddColumn<string>(
                 name: "Discriminator",
                 table: "Goal",
@@ -28,12 +18,6 @@ namespace GoalAppWebVersion.Migrations
                 maxLength: 21,
                 nullable: false,
                 defaultValue: "");
-
-            migrationBuilder.AddColumn<int>(
-                name: "HabitStreak",
-                table: "Goal",
-                type: "int",
-                nullable: true);
 
             migrationBuilder.AddColumn<string>(
                 name: "HowOften",
@@ -88,15 +72,7 @@ namespace GoalAppWebVersion.Migrations
                 name: "ExerciseItem");
 
             migrationBuilder.DropColumn(
-                name: "DaysSinceHabitRelapse",
-                table: "Goal");
-
-            migrationBuilder.DropColumn(
                 name: "Discriminator",
-                table: "Goal");
-
-            migrationBuilder.DropColumn(
-                name: "HabitStreak",
                 table: "Goal");
 
             migrationBuilder.DropColumn(
@@ -110,13 +86,6 @@ namespace GoalAppWebVersion.Migrations
             migrationBuilder.DropColumn(
                 name: "ReminderFrequency",
                 table: "Goal");
-
-            migrationBuilder.AddColumn<int>(
-                name: "Streak",
-                table: "Goal",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
         }
     }
 }

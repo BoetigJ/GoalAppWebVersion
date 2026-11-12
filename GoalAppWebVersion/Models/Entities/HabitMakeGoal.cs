@@ -11,9 +11,9 @@
         {
         }
 
-        public int CurrentCount => Streak;                              // ITrackable
-        public void RecordProgress() => IncrementDaysSinceRelapse();    // ITrackable
-        public void Reset() => Relapse();                               // IResettable
+        public int CurrentCount => Streak;                    // ITrackable
+        public void RecordProgress() => IncrementStreak();    // ITrackable
+        public void Reset() => BreakStreak();                 // IResettable
 
         public event StreakMilestoneHandler? OnMilestone;
         private static readonly int[] milestones = { 7, 30, 100 };
@@ -31,6 +31,5 @@
         {
             Streak = 0;
         }
-
     }
 }

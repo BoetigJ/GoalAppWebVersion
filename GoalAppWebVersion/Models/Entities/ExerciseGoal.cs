@@ -9,14 +9,18 @@
 
     public sealed class ExerciseGoal : Goal, ITrackable, IResettable
     {
-        // ...existing constructors, Exercises, and AddExercise overloads...
+        private ExerciseGoal() { }   // required by EF Core
+
+        public ExerciseGoal(string name, string howOften, string frequency)
+            : base(name, howOften, frequency)
+        {
+        }
+
+        public List<ExerciseItem> Exercises { get; } = new();
 
         public int CurrentCount => Streak;       // ITrackable
         public void RecordProgress() => Streak++;
         public void Reset() => Streak = 0;       // IResettable
-        private ExerciseGoal() { }   // required by EF Core
-
-        public List<ExerciseItem> Exercises { get; } = new();
 
         // Overload 1: a single exercise with reps
         public void AddExercise(string exerciseType, int reps)

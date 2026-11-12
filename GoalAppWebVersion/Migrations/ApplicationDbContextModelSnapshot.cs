@@ -75,6 +75,9 @@ namespace GoalAppWebVersion.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Streak")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Goal");
@@ -95,18 +98,12 @@ namespace GoalAppWebVersion.Migrations
                 {
                     b.HasBaseType("GoalAppWebVersion.Models.Entities.Goal");
 
-                    b.Property<int>("DaysSinceHabitRelapse")
-                        .HasColumnType("int");
-
                     b.HasDiscriminator().HasValue("HabitBreakGoal");
                 });
 
             modelBuilder.Entity("GoalAppWebVersion.Models.Entities.HabitMakeGoal", b =>
                 {
                     b.HasBaseType("GoalAppWebVersion.Models.Entities.Goal");
-
-                    b.Property<int>("HabitStreak")
-                        .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("HabitMakeGoal");
                 });
