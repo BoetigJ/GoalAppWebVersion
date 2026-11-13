@@ -178,3 +178,25 @@ body {
 .footer {
     margin-top: 20px;
 }
+
+/* Goal List Action Buttons */
+.goal-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+    /* Make all action buttons the same height */
+    .goal-actions .btn {
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        padding: 0 12px;
+    }
+
+    /* Remove default form spacing */
+    .goal-actions form {
+        margin: 0;
+    }

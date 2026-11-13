@@ -1,14 +1,32 @@
+
 using GoalAppWebVersion.Models;
+using GoalAppWebVersion.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace GoalAppWebVersion.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly ApplicationDbContext _context;
+
+        public HomeController(ApplicationDbContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var goals = await _context.Goal
+                .Select(g => new GoalStreakViewModel
+                {
+                    GoalName = g.Name,
+                    Streak = g.Streak
+                })
+                .ToListAsync();
+
+            return View(goals);
         }
 
         public IActionResult Privacy()
@@ -19,7 +37,10 @@ namespace GoalAppWebVersion.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            });
         }
     }
 }

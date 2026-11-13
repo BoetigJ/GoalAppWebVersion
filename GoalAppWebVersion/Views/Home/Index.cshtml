@@ -1,8 +1,117 @@
-﻿@{
+﻿@model List<GoalAppWebVersion.Models.GoalStreakViewModel>
+
+@using System.Text.Json
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+
+    <div class="text-center mb-4">
+        <h1 class="display-4">Welcome to Visionary!</h1>
+        <h2 class="display-8">An powerful tool that enables you to track your progress towards your goals</h2>
+        
+    </div>
+
+    <div class="card shadow-sm p-4">
+
+        <h3 class="mb-4">Current Goal Streaks</h3>
+
+        @if (Model.Count > 0)
+        {
+            <div style="height: 350px;">
+                <canvas id="goalStreakChart"></canvas>
+            </div>
+        }
+        else
+        {
+            <p class="text-center">
+                You haven't created any goals yet.
+            </p>
+        }
+
+    </div>
+        
+    <div class="mt-4">
+        <p class="text-center">
+            Give careful thought to the paths for your feet
+            and be steadfast in all your ways. - Proverbs 4:26
+        </p>
+    </div>
+
 </div>
+
+@section Scripts {
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    @if (Model.Count > 0)
+    {
+        <script>
+
+            const goalNames = @Html.Raw(
+                        JsonSerializer.Serialize(Model.Select(g => g.GoalName))
+                );
+
+            const goalStreaks = @Html.Raw(
+                        JsonSerializer.Serialize(Model.Select(g => g.Streak))
+                );
+
+            const ctx = document.getElementById('goalStreakChart');
+
+            new Chart(ctx, {
+                type: 'bar',
+
+                data: {
+                    labels: goalNames,
+
+                    datasets: [{
+                        label: 'Streak (Days)',
+                        data: goalStreaks,
+
+                        backgroundColor: '#3E8060',
+                        borderColor: '#234E3D',
+                        borderWidth: 1,
+
+                        borderRadius: 5
+                    }]
+                },
+
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Goals'
+                            }
+                        },
+
+                        y: {
+                            beginAtZero: true,
+
+                            title: {
+                                display: true,
+                                text: 'Streak (Days)'
+                            },
+
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    },
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+        </script>
+    }
+}
